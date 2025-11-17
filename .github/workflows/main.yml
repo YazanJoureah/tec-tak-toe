@@ -84,9 +84,9 @@ jobs:
       - name: Set lowercase image name
         id: set_image
         run: |
-          LOWERCASE_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
-          echo "IMAGE_NAME=$LOWERCASE_OWNER/${{ github.event.repository.name }}" >> $GITHUB_ENV
-          echo "Full image name: $LOWERCASE_OWNER/${{ github.event.repository.name }}"
+          # Use your personal username instead of organization
+          echo "IMAGE_NAME=${{ github.actor }}/tec-tak-toe" >> $GITHUB_ENV
+          echo "Full image name: ${{ github.actor }}/tec-tak-toe"
       
       - name: Download build artifacts
         uses: actions/download-artifact@v4
