@@ -126,12 +126,12 @@ jobs:
       - name: Scan for vulnerabilities
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
+          image-ref: 'ghcr.io/${{ github.actor | lower }}/tec-tak-toe:${{ github.sha }}' # Force lowercase
           format: 'table'
           exit-code: 1
           ignore-unfixed: false
           severity: 'CRITICAL,HIGH'
-      
+          
       - name: Push Docker image
         uses: docker/build-push-action@v5
         with:
