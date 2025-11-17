@@ -81,12 +81,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Set lowercase image name
-        id: set_image
+      - name: Set lowercase variables
+        id: set_vars
         run: |
-          # Use your personal username instead of organization
-          echo "IMAGE_NAME=${{ github.actor }}/tec-tak-toe" >> $GITHUB_ENV
-          echo "Full image name: ${{ github.actor }}/tec-tak-toe"
+          echo "LOWERCASE_ACTOR=$(echo "${{ github.actor }}" | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+          echo "IMAGE_NAME=$LOWERCASE_ACTOR/tec-tak-toe" >> $GITHUB_ENV
       
       - name: Download build artifacts
         uses: actions/download-artifact@v4
@@ -126,12 +125,12 @@ jobs:
       - name: Scan for vulnerabilities
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'ghcr.io/${{ github.actor | lower }}/tec-tak-toe:${{ github.sha }}' # Force lowercase
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           format: 'table'
           exit-code: 1
           ignore-unfixed: false
           severity: 'CRITICAL,HIGH'
-          
+      
       - name: Push Docker image
         uses: docker/build-push-action@v5
         with:
