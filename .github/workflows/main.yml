@@ -77,7 +77,7 @@ jobs:
     needs: [build]
     env:
       REGISTRY: ghcr.io
-      IMAGE_NAME: ${{ github.repository_owner }}/tec-tak-toe
+      IMAGE_NAME: ${{ github.actor }}/tec-tak-toe
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
