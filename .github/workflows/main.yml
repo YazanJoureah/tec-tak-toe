@@ -108,14 +108,13 @@ jobs:
             type=ref,event=branch
             latest
 
-      - name: Build Docker image
+      - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: false
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          load: true
 
       - name: Scan for vulnerabilities
         uses: aquasecurity/trivy-action@master
@@ -125,14 +124,6 @@ jobs:
           exit-code: 1
           ignore-unfixed: false
           severity: 'CRITICAL,HIGH'
-
-      - name: Push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
 
       - name: Set image tag output
         id: set_output
